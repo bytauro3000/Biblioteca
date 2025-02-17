@@ -1,0 +1,32 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-evenly">
+    <div class="container-fluid px-5">
+        <a class="navbar-brand" href="@Url.Action("Index", "Inicio")">Biblioteca Digital</a>
+       @if (ViewBag.esBase ?? false) {
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Inicio")">Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Libros
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Buscar", "Libro")">Buscar</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Registrar", "Libro")">Registrar</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>} else {
+        <div class="navbar-nav ms-auto">
+            <form method="post" action="@Url.Action("Buscar", "Libro")" >
+                <input type="hidden" id="idCategoria" name="cmbCategoriaId" value="@(ViewBag.IdCategoriaSelected ?? -1)">
+                <button type="submit" class="btn btn-info btn-sm">Regresar</button>
+            </form>
+        </div>
+        }
+    </div>
+</nav>

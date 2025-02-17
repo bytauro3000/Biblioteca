@@ -1,0 +1,63 @@
+﻿@using Proy1Ejercicio1_MVC_BibliotecaDigital.Models
+
+@model List<Categoria>
+
+@{
+    ViewBag.Titulo = "Editar Libro";
+    Libro libro = ViewBag.Libro ?? new Libro() { Id = -1, Titulo = "LIBRO NO DEFINIDO!" };
+    ViewBag.IdCategoriaSelected = libro.Categoria.Id;
+}
+
+<form class="card p-4 shadow-sm" method="post" action="@Url.Action("Editar", "Libro")">
+    <h3 class="mb-4">Actualizar Libro</h3>
+    <div class="mb-3">
+        <label for="idLibro" class="form-label">ID:</label>
+        <input type="text" id="idLibro" name="txtId" value="@libro.Id" class="form-control" required readonly>
+    </div>
+    <div class="mb-3">
+        <label for="tituloLibro" class="form-label">Título:</label>
+        <input type="text" id="tituloLibro" name="txtTitulo" value="@libro.Titulo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="autorLibro" class="form-label">Autor:</label>
+        <input type="text" id="autorLibro" name="txtAutor" value="@libro.Autor" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="anioLibro" class="form-label">Año de Publicación:</label>
+        <input type="number" id="anioLibro" name="nudAnio" min="0" value="@libro.AnioPublicacion" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="resumenLibro" class="form-label">Resumen:</label>
+        <textarea id="resumenLibro" name="txaResumen" rows="3" class="form-control">@libro.Resumen</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="numPaginas" class="form-label">Número de Páginas:</label>
+        <input type="number" id="numPaginas" name="nudNumPaginas" min="0" value="@libro.NumPaginas" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="editorialLibro" class="form-label">Editorial:</label>
+        <input type="text" id="editorialLibro" name="txtEditorial" value="@libro.Editorial" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="categoriaLibro" class="form-label">Categoría:</label>
+        <select class="form-select" name="cmbCategoriaId" required>
+            <option disabled selected>Seleccionar Categoría</option>
+        @foreach (Categoria categoria in Model) {
+            <option value="@categoria.Id" @(ViewBag.IdCategoriaSelected == categoria.Id ? "selected" : "")>@categoria.Nombre</option>
+        }
+        </select>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Actualizar Libro</button>
+    </div>
+</form>
+@if (ViewBag.EsConforme != null && ViewBag.Mensaje != null) {
+    <script>
+    Swal.fire({
+        title: '¡Edición del Libro!',
+        text: '@ViewBag.Mensaje',
+        icon: '@(ViewBag.EsConforme ? "success" : "error")',
+        confirmButtonText: 'Aceptar'
+    });
+    </script>
+}

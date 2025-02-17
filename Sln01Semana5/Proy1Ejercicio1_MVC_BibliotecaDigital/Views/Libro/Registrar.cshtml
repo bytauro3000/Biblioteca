@@ -1,0 +1,60 @@
+﻿@using Proy1Ejercicio1_MVC_BibliotecaDigital.Models
+
+@model List<Categoria>
+
+@{
+    ViewBag.Titulo = "Registrar Libro";
+    // Obtener el ID de la categoría seleccionada anteriormente y si no existe (es null), se asigna -1
+    int idCtgSel = ViewBag.IdCategoriaSelected ?? -1;
+    // ?? es el operador de coalescencia nula, devuelve el valor de la derecha si es nulo, sino el valor de la izquierda
+}
+
+<form class="card p-4 shadow-sm" method="post" action="@Url.Action("Registrar", "Libro")">
+    <h3 class="mb-4">Registrar Nuevo Libro</h3>
+    <div class="mb-3">
+        <label for="tituloLibro" class="form-label">Título:</label>
+        <input type="text" id="tituloLibro" name="txtTitulo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="autorLibro" class="form-label">Autor:</label>
+        <input type="text" id="autorLibro" name="txtAutor" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="anioLibro" class="form-label">Año de Publicación:</label>
+        <input type="number" id="anioLibro" name="nudAnio" min="0" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="resumenLibro" class="form-label">Resumen:</label>
+        <textarea id="resumenLibro" name="txaResumen" rows="3" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="numPaginas" class="form-label">Número de Páginas:</label>
+        <input type="number" id="numPaginas" name="nudNumPaginas" min="0" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="editorialLibro" class="form-label">Editorial:</label>
+        <input type="text" id="editorialLibro" name="txtEditorial" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="categoriaLibro" class="form-label">Categoría:</label>
+        <select class="form-select" name="cmbCategoriaId" required>
+            <option disabled selected>Seleccionar Categoría</option>
+        @foreach (Categoria categoria in Model) {
+            <option value="@categoria.Id">@categoria.Nombre</option>
+        }
+        </select>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Registrar Libro</button>
+    </div>
+</form>
+@if (ViewBag.EsConforme != null && ViewBag.Mensaje != null) {
+<script>
+    Swal.fire({
+        title: '¡Creación del Libro!',
+        text: '@ViewBag.Mensaje',
+        icon: '@(ViewBag.EsConforme ? "success" : "error")',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+}

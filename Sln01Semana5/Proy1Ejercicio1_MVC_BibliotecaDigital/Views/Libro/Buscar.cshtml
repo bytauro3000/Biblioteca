@@ -1,0 +1,62 @@
+﻿@using Proy1Ejercicio1_MVC_BibliotecaDigital.Models
+
+@model List<Categoria>
+
+@{
+    ViewBag.Titulo = "Gestionar Libros";
+    ViewBag.esBase = true;
+}
+
+<h1>Lista de Libros</h1>
+<form method="post" action="@Url.Action("Buscar", "Libro")">
+    <div class="row">
+        <div class="col-md-3">
+            <select class="form-select" name="cmbCategoriaId">
+                <option value="" disabled selected>Seleccionar Categoría</option>
+                @foreach (Categoria categoria in Model) {
+                    <option value="@categoria.Id" @(ViewBag.IdCategoriaSelected == categoria.Id ? "selected" : "")>@categoria.Nombre</option>
+                }
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+</form>
+<!-- Tabla de Libros -->
+@if (ViewBag.ListaLibrosBuscados != null && ViewBag.ListaLibrosBuscados.Count > 0) {
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Año de Publicación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Libro libro in ViewBag.ListaLibrosBuscados) {
+                <tr>
+                    <td>@libro.Id</td>
+                    <td>@libro.Titulo</td>
+                    <td>@libro.Autor</td>
+                    <td>@libro.AnioPublicacion</td>
+                    <td>
+                        <a href="@Url.Action("Detalle", "Libro", new { id = libro.Id })" class="btn btn-info btn-sm">Ver detalle</a>
+                        <a href="@Url.Action("Editar", "Libro", new { id = libro.Id })" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="@Url.Action("Eliminar", "Libro", new { id = libro.Id })" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@if (ViewBag.EsConforme != null && ViewBag.Mensaje != null) {
+<script>
+    Swal.fire({
+        title: '¡Eliminación del Libro!',
+        text: '@ViewBag.Mensaje',
+        icon: '@(ViewBag.EsConforme ? "success" : "error")',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+}
